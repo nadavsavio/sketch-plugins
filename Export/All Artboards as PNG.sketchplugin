@@ -2,6 +2,7 @@
 // and skips any artboards named "no-save"
 
 
+// just for debugging
 function alert(msg, title) {
   title = title || "hey HEY hey";
   var app = [NSApplication sharedApplication];

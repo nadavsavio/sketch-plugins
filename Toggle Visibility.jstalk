@@ -2,6 +2,7 @@
 // does what it says on the tin... works with multiple selections
 
 
+// just for debugging
 function alert(msg, title) {
   title = title || "Whoops";
   var app = [NSApplication sharedApplication];
