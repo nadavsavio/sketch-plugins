@@ -1,4 +1,5 @@
 // (control shift \)
+// does what it says on the tin... works with multiple selections
 
 
 function alert(msg, title) {

@@ -5,9 +5,9 @@
 
 TODO: 
 
-1. currently zooms to fit... should ideally jump to the exact same position without zooming
-2. find a way to clear all the selections once and then select the right one
-3. crashes Sketch every so often if you go too fast
+0. Abstract functions into separate file.
+1. currently zooms to fit... would ideally jump to the exact same position without zooming
+2. crashes Sketch every so often if you go too fast
 
 */
 
