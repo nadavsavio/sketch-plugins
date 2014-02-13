@@ -1,0 +1,117 @@
+// (control shift ,)
+// Moves view to be centered on previous artboard in layer list, top to bottom
+
+/*
+
+TODO: 
+
+1. currently zooms to fit... should ideally jump to the exact same position without zooming
+2. find a way to clear all the selections once and then select the right one
+3. crashes Sketch every so often if you go too fast
+
+*/
+
+
+// GLOBALS
+
+var current_ab;
+var all_abs = [[doc currentPage] artboards];
+var last_ab_index = [all_abs length] - 1;
+var go_next = 0; // if 0 then go to previous;
+
+
+
+// FUNCTIONS
+
+function alert(msg, title) {
+  title = title || "hey HEY hey";
+  var app = [NSApplication sharedApplication];
+  [app displayDialog:msg withTitle:title];
+}
+
+
+function get_previous_ab(current_ab) {
+	// takes artboard object and returns next artboard object in artboards array (or first if on the last one already)
+	// *** note that artboards array is built from bottom to top in the UI list of artboards
+
+	// loop through all artboards and see if each is the current one
+	for (var i=0; i<=last_ab_index; i++) {
+	    var test_ab = all_abs[i];
+		if (test_ab == current_ab) {
+			// if it's the first one then loop
+			if (i==last_ab_index) {
+				var k = 0;
+				var next_ab = all_abs[k];
+				return next_ab;
+			} else {
+				var k = i+1;
+				var next_ab = all_abs[k];
+				return next_ab;
+			}
+		}
+	}
+}
+
+function get_next_ab(current_ab) {
+	// takes artboard object and returns next artboard object in artboards array (or first if on the last one already)
+	// *** note that artboards array is built from bottom to top in the UI list of artboards
+
+	// loop through all artboards and see if each is the current one
+	for (var i=0; i<=last_ab_index; i++) {
+	    var test_ab = all_abs[i];
+		if (test_ab == current_ab) {
+			// if it's the last one then loop
+			if (i==0) {
+				var k = last_ab_index;
+				var next_ab = all_abs[k];
+				return next_ab;
+			} else {
+				var k = i-1;
+				var next_ab = all_abs[k];
+				return next_ab;
+			}
+		}
+	}
+}
+
+
+function get_an_artboard(selection) {
+	// if there is a selection; make sure it's an artboard and, if not bump up to its artboard
+	current_ab = selection[0];
+	var current_class = [current_ab class];
+	while(current_ab && ([current_ab class] !== MSArtboardGroup)) {
+		current_ab.setIsSelected(0);
+		current_ab = [current_ab parentGroup];
+	}
+	current_ab.setIsSelected(1);
+	return current_ab;
+}
+
+// MAIN
+
+
+if(!(selection && [selection length]) || (selection.length()==0)) {
+	// if there's no selection, just set the next one to the first (remember that array is "backwards" == bottom to top)
+	next_ab = all_abs[last_ab_index];
+	next_ab.setIsSelected(1);
+} else {
+	// if there *is* a selection, then make sure it's ab artboard and find the next/previous
+	current_ab = get_an_artboard(selection);	
+
+	if (!go_next) {
+		var next_ab = get_previous_ab(current_ab);
+	} else {
+		// go next
+		var next_ab = get_next_ab(current_ab);
+	}
+	current_ab.setIsSelected(0);
+	next_ab.setIsSelected(1);
+}
+
+
+
+
+[[doc currentView] zoomToFitRect:[next_ab absoluteRect]];
+// [[doc currentView] actualSize]; // this worked-ish but failed if you didn't start at 100%
+
+

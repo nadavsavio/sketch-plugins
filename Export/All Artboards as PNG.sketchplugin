@@ -1,0 +1,78 @@
+// Export first artboard on every page in doc
+// NOTE: only exports the first artboard on each page
+// and skips any artboards named "no-save" (yeah, lame, I know)
+
+
+function alert(msg, title) {
+  title = title || "hey HEY hey";
+  var app = [NSApplication sharedApplication];
+  [app displayDialog:msg withTitle:title];
+}
+
+
+// Let the user specify a directory
+function get_dir_from_prompt(){
+    var panel = [NSOpenPanel openPanel];
+    [panel setMessage:"Where do you want to place your assets?"];
+    [panel setCanChooseDirectories: YES];
+    [panel setCanChooseFiles: NO];
+    var default_dir = [[doc fileURL] URLByDeletingLastPathComponent];
+    [panel setDirectoryURL:default_dir];
+
+    if ([panel runModal] == NSOKButton){
+	var message = [panel filename];
+	return message;
+    }
+}
+
+
+var daDirectory = get_dir_from_prompt();
+
+if(daDirectory != undefined) {
+	var daPages = [doc pages];
+	var numPages = [daPages length];
+
+	// FOR EACH PAGE
+	for (var i=0; i<numPages; i++) {
+		var daPage = daPages[i];
+
+		// get all artboards on the page
+		var all_abs = [daPage artboards];
+		var last_ab_index = [all_abs length];
+
+
+/* this version doesn't loop
+
+		    var daArtboard = all_abs[0];
+			[doc setCurrentPage:daPage];
+
+			var daName = [daArtboard name];
+			if (daName != "no-save") {
+				// this first version prepends n_ to the filename
+				// var fileNameToSave = daDirectory + "/" + i + "-" + daName + ".png";
+				var fileNameToSave = daDirectory + "/" + daName + ".png";
+				[doc saveArtboardOrSlice:daArtboard toFile:fileNameToSave];
+			}
+*/
+
+
+ // this version loops
+
+		// FOR EACH ARTBOARD ON THE PAGE
+		for (var k=0; k<last_ab_index; k++) {
+		    var daArtboard = all_abs[k];
+
+		    // switch to that page (otherwise Sketch won't print)
+			[doc setCurrentPage:daPage];
+
+			var daName = [daArtboard name];
+			if (daName != "no-save") {
+				// this first version prepends n_ to the filename
+				// var fileNameToSave = daDirectory + "/" + i + "-" + daName + ".png";
+				var fileNameToSave = daDirectory + "/" + daName + ".png";
+				[doc saveArtboardOrSlice:daArtboard toFile:fileNameToSave];
+			}
+		}		
+	}
+}
+
