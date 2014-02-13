@@ -1,6 +1,5 @@
-// Export first artboard on every page in doc
-// NOTE: only exports the first artboard on each page
-// and skips any artboards named "no-save" (yeah, lame, I know)
+// Exports all artboards on every page in doc
+// and skips any artboards named "no-save"
 
 
 function alert(msg, title) {
@@ -40,23 +39,6 @@ if(daDirectory != undefined) {
 		var all_abs = [daPage artboards];
 		var last_ab_index = [all_abs length];
 
-
-/* this version doesn't loop
-
-		    var daArtboard = all_abs[0];
-			[doc setCurrentPage:daPage];
-
-			var daName = [daArtboard name];
-			if (daName != "no-save") {
-				// this first version prepends n_ to the filename
-				// var fileNameToSave = daDirectory + "/" + i + "-" + daName + ".png";
-				var fileNameToSave = daDirectory + "/" + daName + ".png";
-				[doc saveArtboardOrSlice:daArtboard toFile:fileNameToSave];
-			}
-*/
-
-
- // this version loops
 
 		// FOR EACH ARTBOARD ON THE PAGE
 		for (var k=0; k<last_ab_index; k++) {
