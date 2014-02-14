@@ -14,12 +14,6 @@ var numSelectedLayers = [selection length];
 if(numSelectedLayers>0) {
 	for (var i=0; i<numSelectedLayers; i++) {
 		var currentLayer = selection[i];
-
-		vis = currentLayer.isVisible();
-		if(vis == true) {
-			[currentLayer setIsVisible:false];
-		} else {
-			[currentLayer setIsVisible:true];
-		}
+		[currentLayer setIsVisible:!currentLayer.isVisible()];
 	}
 }
