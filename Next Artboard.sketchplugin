@@ -109,8 +109,8 @@ if(!(selection && [selection length]) || (selection.length()==0)) {
 
 
 
-[[doc currentView] zoomToFitRect:[next_ab absoluteRect]];
-// [[doc currentView] actualSize]; // this worked-ish but failed if you didn't start at 100%
+[[doc currentView] centerRect:[next_ab absoluteRect]];
+[[doc currentView] actualSize];
 
 
 
